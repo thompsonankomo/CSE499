@@ -20,6 +20,7 @@
     <PkgMicrosoft_EntityFrameworkCore_SqlServer Condition=" '$(PkgMicrosoft_EntityFrameworkCore_SqlServer)' == '' ">C:\Users\thomp\.nuget\packages\microsoft.entityframeworkcore.sqlserver\8.0.10</PkgMicrosoft_EntityFrameworkCore_SqlServer>
     <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\thomp\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.3</PkgMicrosoft_CodeAnalysis_Analyzers>
     <PkgMicrosoft_EntityFrameworkCore_Design Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Design)' == '' ">C:\Users\thomp\.nuget\packages\microsoft.entityframeworkcore.design\8.0.10</PkgMicrosoft_EntityFrameworkCore_Design>
+    <PkgMicrosoft_AspNetCore_Authentication_JwtBearer Condition=" '$(PkgMicrosoft_AspNetCore_Authentication_JwtBearer)' == '' ">C:\Users\thomp\.nuget\packages\microsoft.aspnetcore.authentication.jwtbearer\8.0.10</PkgMicrosoft_AspNetCore_Authentication_JwtBearer>
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\thomp\.nuget\packages\fsharp.core\8.0.300</PkgFSharp_Core>
   </PropertyGroup>
 </Project>

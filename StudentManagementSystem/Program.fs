@@ -1,41 +1,43 @@
+namespace StudentManagementSystem
+
+open System
+open System.Text
 open Microsoft.AspNetCore.Builder
+open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.IdentityModel.Tokens
-open System.Text
+open Microsoft.EntityFrameworkCore
+open StudentManagementSystem.Data
+open StudentManagementSystem.Models
 
-let (builder: obj) = WebApplication.CreateBuilder(args)
+module Program =
+    [<EntryPoint>]
+    let main args =
+        let builder = WebApplication.CreateBuilder(args)
 
-builder.Services.AddControllers()
+        // Configure services
+        builder.Services.AddDbContext<ApplicationDbContext>(fun (options: DbContextOptionsBuilder) ->
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")) |> ignore
+        )
 
-// Database Context
-builder.Services.AddDbContext<ApplicationDbContext>(fun options ->
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-    |> ignore)
+        builder.Services.AddControllers()
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(fun options ->
+                options.TokenValidationParameters <- TokenValidationParameters(
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSecretKeyHere"))
+                )
+            ) |> ignore
 
-// Configure JWT Authentication
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(fun options ->
-        options.TokenValidationParameters <- TokenValidationParameters(
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSecretKeyHere"))
-        ))
-
-let app = builder.Build()
-
-if app.Environment.IsDevelopment() then
-    app.UseDeveloperExceptionPage()
-
-app.UseHttpsRedirection()
-app.UseRouting()
-
-// Add Authentication and Authorization middleware
-app.UseAuthentication()
-app.UseAuthorization()
-
-app.MapControllers()
-app.Run()
+        let app = builder.Build()
+        app.UseHttpsRedirection()
+        app.UseAuthentication()
+        app.UseAuthorization()
+        app.MapControllers()
+        app.Run()
+        0

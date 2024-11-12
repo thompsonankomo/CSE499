@@ -2,6 +2,14 @@ open System.IdentityModel.Tokens.Jwt
 open System.Security.Claims
 open Microsoft.IdentityModel.Tokens
 open System.Text
+open Microsoft.AspNetCore.Authorization
+
+[<Authorize(Roles = "Admin")>]
+[<Route("api/[controller]")>]
+[<ApiController>]
+type StudentController() =
+    // Secure student management endpoints for Admin role only
+
 
 [<HttpPost("login")>]
 member this.Login(username: string, password: string) =
